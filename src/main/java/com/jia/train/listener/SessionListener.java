@@ -5,5 +5,5 @@ package com.jia.train.listener;
  */
 public interface SessionListener {
 
-     void dealSessionExpired(String msg);
+     void dealSessionExpired(boolean status,String msg);
 }

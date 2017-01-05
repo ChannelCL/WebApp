@@ -2,6 +2,7 @@ package com.jia.train.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jia.train.data.UserData;
 import com.jia.train.po.*;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -184,12 +185,8 @@ public class Utils {
     public static void initData(U12306 u12306) {
 
         try {
-            getPassengers(u12306);
-            TrainOrder order = getNoCompleteOrder(u12306);
-            if (order != null) {
-                payOrder(u12306, order.getSequence_no());
-                cancelNoCompleteOrder(u12306, order.getSequence_no());
-            }
+            UserData.setPassengers(getPassengers(u12306));
+            UserData.setNoCompleteOrder(getNoCompleteOrder(u12306));
 
         } catch (Exception e) {
             e.printStackTrace();

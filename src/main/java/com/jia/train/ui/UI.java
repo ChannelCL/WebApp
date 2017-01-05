@@ -1,4 +1,5 @@
 package com.jia.train.ui;
+import com.jia.train.data.UserData;
 import com.jia.train.listener.LoginActionListener;
 import com.jia.train.listener.SessionListener;
 import com.jia.train.po.U12306;
@@ -21,7 +22,7 @@ public class UI extends JFrame implements SessionListener{
     public JLabel psdlabel=new JLabel("密码:");
     public JButton loginButton=new JButton("登录");
     public LoginActionListener listen=new LoginActionListener(this);
-    public JLabel welcomeLabel=new JLabel("，欢迎您");
+    public JLabel welcomeLabel=new JLabel("");
     public U12306 u12306=new U12306();
     public UI() throws IOException {
         initListener();
@@ -42,7 +43,10 @@ public class UI extends JFrame implements SessionListener{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(100,20,1100,700);
         loginPanel.setLayout(null);
-        loginPanel.setBounds(0,0,this.getWidth(),50);
+        loginPanel.setBounds(0,0,this.getWidth()-100,50);
+        welcomeLabel.setFont(new Font("宋体",Font.PLAIN,14));
+        welcomeLabel.setBounds(this.getWidth()-200,10,150,30);
+        this.add(welcomeLabel);
         usertext.setFont(new Font("宋体",Font.PLAIN,16));
         userlabel.setFont(new Font("宋体",Font.PLAIN,14));
         usertext.setBounds(100,10,150,25);
@@ -69,10 +73,15 @@ public class UI extends JFrame implements SessionListener{
     }
 
     @Override
-    public void dealSessionExpired(String msg) {
+    public void dealSessionExpired(boolean status,String msg) {
         try {
-            Utils.setCookie(u12306);
-            showCaptchaUI();
+            if(status){
+                welcomeLabel.setText("欢迎你，"+ UserData.getName());
+            }else {
+                Utils.setCookie(u12306);
+                showCaptchaUI();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -23,7 +23,7 @@ public class SessionCheck {
      * 启动线程检测登录状态
      */
     static {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 doCheck();
@@ -42,13 +42,14 @@ public class SessionCheck {
     public static synchronized void removeSessionListener(SessionListener listener) {
         listeners.remove(listener);
     }
+
     /**
      * 启动检测登录状态
      */
     public static void startCheck(U12306 u12306) {
-        SessionCheck.u12306=u12306;
+        SessionCheck.u12306 = u12306;
         isStart = true;
-
+        notifyListener(true, "登录成功");
     }
 
     /**
@@ -71,15 +72,15 @@ public class SessionCheck {
                     resp = client.execute(post);
                     result = EntityUtils.toString(resp.getEntity());
                     System.out.println(result);
-                    if(!result.contains("flag\":true")){
-                        JSONArray array=JSONObject.parseObject(result).getJSONArray("messages");
-                        if(array!=null){
-                            notifyListener(array.getString(0));
-                        }else {
-                            notifyListener("登录失效，未知异常");
+                    if (!result.contains("flag\":true")) {
+                        JSONArray array = JSONObject.parseObject(result).getJSONArray("messages");
+                        if (array != null) {
+                            notifyListener(false, array.getString(0));
+                        } else {
+                            notifyListener(false, "登录失效，未知异常");
                         }
 
-                        isStart=false;
+                        isStart = false;
                     }
                 }
             } catch (Exception e) {
@@ -88,10 +89,10 @@ public class SessionCheck {
         }
     }
 
-    private synchronized static void notifyListener(String msg) {
-        System.out.println("登录失效通知观察者,Msg="+msg);
-        for(SessionListener l:listeners){
-            l.dealSessionExpired(msg);
+    private synchronized static void notifyListener(boolean status, String msg) {
+        System.out.println("登录失效通知观察者,Msg=" + msg);
+        for (SessionListener l : listeners) {
+            l.dealSessionExpired(status, msg);
         }
     }
 

@@ -1,16 +1,12 @@
 package com.jia.train.ui;
 
-import com.jia.common.util.HttpClientUtil;
+import com.jia.train.util.HttpClientUtil;
 import com.jia.train.listener.LoginActionListener;
 import com.jia.train.po.U12306;
 import com.jia.train.util.Utils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

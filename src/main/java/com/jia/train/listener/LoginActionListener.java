@@ -60,10 +60,11 @@ public class LoginActionListener implements ActionListener {
             //检查验证码
             if (Utils.validateCode(captchaUI.u12306)) {
                 if (Utils.login(captchaUI.u12306)) {
+                    Utils.initData(captchaUI.u12306);
                     //启动检测登录状态线程
                     SessionCheck.startCheck(captchaUI.u12306);
                     captchaUI.dispose();
-                    Utils.initData(captchaUI.u12306);
+
 
                 }
             } else {
