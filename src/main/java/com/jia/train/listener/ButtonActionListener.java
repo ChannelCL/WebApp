@@ -72,13 +72,13 @@ public class ButtonActionListener implements ActionListener {
                     SessionCheck.startCheck(captchaUI.u12306);
                 } else if (code == Constants.USERNAME_ERROR) {
                     JOptionPane.showMessageDialog(captchaUI,"用户名不存在！");
-                    captchaUI.refreshCaptcha(++(captchaUI.captchaVersion));
+                    captchaUI.dispose();
                 }else if (code == Constants.PASSWORD_ERROR) {
                     JOptionPane.showMessageDialog(captchaUI,"密码错误！超过4次错误锁定20分钟！");
-                    captchaUI.refreshCaptcha(++(captchaUI.captchaVersion));
+                    captchaUI.dispose();
                 }else if(code==Constants.USERNAME_LOCKED){
                     JOptionPane.showMessageDialog(captchaUI,"账户已被锁定，稍后再试！");
-                    captchaUI.refreshCaptcha(++(captchaUI.captchaVersion));
+                    captchaUI.dispose();
                 }
             }else {
                 captchaUI.refreshCaptcha(++(captchaUI.captchaVersion));
