@@ -23,6 +23,7 @@ public class UI extends JFrame implements SessionListener{
     public JButton loginButton=new JButton("登录");
     public LoginActionListener listen=new LoginActionListener(this);
     public JLabel welcomeLabel=new JLabel("");
+    public JButton logoutButton=new JButton("注销");
     public U12306 u12306=new U12306();
     public UI() throws IOException {
         initListener();
@@ -33,6 +34,7 @@ public class UI extends JFrame implements SessionListener{
     private void initListener() {
         loginButton.addActionListener(listen);
         SessionCheck.addSessionListener(this);
+        logoutButton.addActionListener(listen);
     }
 
     private void initUI() throws IOException {
@@ -42,15 +44,19 @@ public class UI extends JFrame implements SessionListener{
         this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/12306.png")));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(100,20,1100,700);
-        loginPanel.setLayout(null);
-        loginPanel.setBounds(0,0,this.getWidth()-100,50);
         welcomeLabel.setFont(new Font("宋体",Font.PLAIN,14));
-        welcomeLabel.setBounds(this.getWidth()-200,10,150,30);
+        welcomeLabel.setBounds(this.getWidth()-230,10,100,30);
         this.add(welcomeLabel);
+        logoutButton.setFont(new Font("宋体",Font.PLAIN,14));
+        logoutButton.setBounds(this.getWidth()-120,13,60,25);
+        logoutButton.setVisible(false);
+        this.add(logoutButton);
         usertext.setFont(new Font("宋体",Font.PLAIN,16));
         userlabel.setFont(new Font("宋体",Font.PLAIN,14));
         usertext.setBounds(100,10,150,25);
         userlabel.setBounds(20,13,100,20);
+        loginPanel.setLayout(null);
+        loginPanel.setBounds(0,0,this.getWidth()-200,50);
         loginPanel.add(userlabel);
         loginPanel.add(usertext);
         psdlabel.setBounds(260,10,150,25);
@@ -77,8 +83,11 @@ public class UI extends JFrame implements SessionListener{
         try {
             if(status){
                 welcomeLabel.setText("欢迎你，"+ UserData.getName());
+                logoutButton.setVisible(true);
+                loginPanel.setVisible(false);
             }else {
                 Utils.setCookie(u12306);
+                loginPanel.setVisible(true);
                 showCaptchaUI();
             }
 

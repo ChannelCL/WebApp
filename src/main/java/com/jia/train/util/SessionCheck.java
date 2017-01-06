@@ -90,7 +90,7 @@ public class SessionCheck {
     }
 
     private synchronized static void notifyListener(boolean status, String msg) {
-        System.out.println("登录失效通知观察者,Msg=" + msg);
+        System.out.println("登录状态通知观察者,Msg=" + msg);
         for (SessionListener l : listeners) {
             l.dealSessionExpired(status, msg);
         }

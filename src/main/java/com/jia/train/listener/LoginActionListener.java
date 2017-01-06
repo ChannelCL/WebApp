@@ -70,6 +70,10 @@ public class LoginActionListener implements ActionListener {
             } else {
                 captchaUI.refreshCaptcha(++(captchaUI.captchaVersion));
             }
+        }else if(e.getActionCommand().equals("注销")){
+            ui.logoutButton.setVisible(false);
+            ui.loginPanel.setVisible(true);
+            ui.welcomeLabel.setText("");
         }
     }
 }
