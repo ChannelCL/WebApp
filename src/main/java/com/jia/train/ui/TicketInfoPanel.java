@@ -49,15 +49,15 @@ public class TicketInfoPanel extends JPanel {
 
     JButton buttonQuery = new JButton("查 询");
 
-    public TicketInfoPanel() {
+    public TicketInfoPanel(int width,int height) {
         initQueryComponent();
         initListener();
+        this.setBounds(100, 100, width-150, height-100);
     }
 
 
     private void initQueryComponent() {
         this.setLayout(null);
-        this.setBounds(0, 0, 800, 600);
         labelStartStation.setBounds(30, 0, 100, 30);
         labelStartStation.setFont(new Font("宋体", Font.PLAIN, 16));
         this.add(labelStartStation);
@@ -295,7 +295,7 @@ public class TicketInfoPanel extends JPanel {
         JFrame frame = new JFrame();
         frame.setBounds(200, 100, 1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new TicketInfoPanel());
+        frame.add(new TicketInfoPanel(800,600));
         frame.setVisible(true);
     }
 }

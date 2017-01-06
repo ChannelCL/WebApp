@@ -2,6 +2,7 @@ package com.jia.train.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jia.train.data.Constants;
 import com.jia.train.data.UserData;
 import com.jia.train.po.*;
 import org.apache.http.Header;
@@ -102,7 +103,7 @@ public class Utils {
      * @param u12306
      * @return
      */
-    public static boolean login(U12306 u12306) {
+    public static int login(U12306 u12306) {
         try {
             HttpClient client = HttpClientUtil.getProxyHttpClient();
             HttpPost post = new HttpPost("https://kyfw.12306.cn/otn/login/loginAysnSuggest");
@@ -114,6 +115,7 @@ public class Utils {
                     "&userDTO.password=" + u12306.getPsd() + "&randCode=" + u12306.getCode()));
             HttpResponse resp = client.execute(post);
             String result = EntityUtils.toString(resp.getEntity());
+            System.out.println(result);
             while (resp.getStatusLine().getStatusCode() != 200) {
                 resp = client.execute(post);
                 result = EntityUtils.toString(resp.getEntity());
@@ -122,14 +124,21 @@ public class Utils {
 
             if (result.contains("loginCheck\":\"Y")) {
                 System.out.println(u12306.getUser() + ":登录成功...");
-                return true;
-            } else {
-                System.out.println(result);
+                return Constants.LOGIN_SUCCESS;
+            } else if(result.contains("登录名不存在")){
+                System.out.println(u12306.getUser()+":用户名不存在");
+                return Constants.USERNAME_ERROR;
+            }else if(result.contains("密码输入错误")){
+                System.out.println(u12306.getUser()+":密码错误");
+                return Constants.PASSWORD_ERROR;
+            }else if(result.contains("用户将锁定")||result.contains("锁定时间")){
+                System.out.println(u12306.getUser()+":用户被锁定");
+                return Constants.USERNAME_LOCKED;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     /**

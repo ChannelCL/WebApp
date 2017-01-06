@@ -1,7 +1,7 @@
 package com.jia.train.ui;
 
 import com.jia.train.util.HttpClientUtil;
-import com.jia.train.listener.LoginActionListener;
+import com.jia.train.listener.ButtonActionListener;
 import com.jia.train.po.U12306;
 import com.jia.train.util.Utils;
 import org.apache.http.HttpResponse;
@@ -48,18 +48,17 @@ public class CaptchaUI extends JFrame{
             e.printStackTrace();
         }
     }
-    public CaptchaUI(UI ui) throws IOException {
+    public CaptchaUI(UI ui,String title) throws IOException {
         this.u12306=ui.u12306;
         this.setLayout(null);
         this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/12306.png")));
-        this.setTitle("请选择验证码....");
+        this.setTitle(title);
         this.setResizable(false);
         this.setBounds(ui.getX()+ui.getWidth()/3, ui.getY()+ui.getHeight()/4, 300, 270);
         confirmButton.setBounds(90,200,100,30);
         updateCaptchaButton.setBounds(210,203,68,25);
         this.add(updateCaptchaButton);
         this.add(confirmButton);
-        this.setAlwaysOnTop(true);
         this.setVisible(true);
         initListener();
         new Thread(){
@@ -93,7 +92,7 @@ public class CaptchaUI extends JFrame{
         /**
          * 确定验证码按钮
          */
-        confirmButton.addActionListener(new LoginActionListener(this));
+        confirmButton.addActionListener(new ButtonActionListener(this));
     }
 
     /**
