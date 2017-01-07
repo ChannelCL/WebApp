@@ -135,7 +135,7 @@ public class HttpClientUtil {
 
         httpClient.getConnectionManager().getSchemeRegistry()
                 .register(new Scheme("https", 443, socketFactory));
-        httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
+//        httpClient.getParams().setParameter(ConnRouteParams.DEFAULT_PROXY, proxy);
         return httpClient;
     }
 
@@ -143,7 +143,7 @@ public class HttpClientUtil {
     public static HttpClient getProxyHttpClient() {
         HttpClient client = null;
         try {
-            client = getHttpClient();
+            client = createSSLClientDefault();
         } catch (Exception e) {
             e.printStackTrace();
         }

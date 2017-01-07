@@ -196,6 +196,8 @@ public class Utils {
         try {
             UserData.setPassengers(getPassengers(u12306));
             UserData.setNoCompleteOrder(getNoCompleteOrder(u12306));
+            payOrder(u12306,UserData.getNoCompleteOrder().getSequence_no());
+//            cancelNoCompleteOrder(u12306,UserData.getNoCompleteOrder().getSequence_no());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -235,8 +237,8 @@ public class Utils {
         map.put("transType", json.getString("transType"));
         map.put("_json_att", "");
         result = HttpClientUtil.getDataByPost(json.getString("epayurl"), u12306, map);
-        TrainPay trainPay = JsoupUtil.formToObject(result, TrainPay.class);
-
+        TrainPay trainPay = ConvertDataUtil.formToObject(result, TrainPay.class);
+        trainPay.setBankId("33000010");
         //构建支付宝订单
         map.clear();
         map.put("tranData", trainPay.getTranData());
@@ -251,7 +253,7 @@ public class Utils {
         result = HttpClientUtil.getDataByPost("https://epay.12306.cn/pay/webBusiness", u12306, map);
         System.out.println("跳转支付宝页面：" + result);
 
-        AliPay aliPay = JsoupUtil.formToObject(result, AliPay.class);
+        AliPay aliPay = ConvertDataUtil.formToObject(result, AliPay.class);
         //调用系统默认浏览器支付车票
         HttpPost post = HttpClientUtil.getHttpPost("https://mapi.alipay.com/gateway.do");
         List<NameValuePair> list = new ArrayList<NameValuePair>();
@@ -308,8 +310,7 @@ public class Utils {
         if (array == null || array.size() == 0) {
             throw new Exception("没有车次信息");
         }
-        System.out.println(JSONObject.toJSONString(array, true));
-        return JSONArray.parseArray(array.toJSONString(), TrainInfo.class);
+        return ConvertDataUtil.getTrainInfos(array.toJSONString());
 
     }
 

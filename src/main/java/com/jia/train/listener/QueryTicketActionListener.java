@@ -1,10 +1,13 @@
 package com.jia.train.listener;
 
+import com.jia.train.po.TrainInfo;
 import com.jia.train.ui.TicketInfoPanel;
+import com.jia.train.ui.TrainInfoTableModel;
 import com.jia.train.util.Utils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * Created by jiaxl on 2017/1/1.
@@ -25,7 +28,11 @@ public class QueryTicketActionListener implements ActionListener {
             @Override
             public void run() {
                 try {
-                    Utils.queryTicket(ticketInfoPanel.queryInfo);
+                    List<TrainInfo>list=Utils.queryTicket(ticketInfoPanel.queryInfo);
+                    ticketInfoPanel.tableModel=new TrainInfoTableModel(list);
+                    System.out.println("ssssss"+list);
+                    ticketInfoPanel.table.setModel(ticketInfoPanel.tableModel);
+                    ticketInfoPanel.table.validate();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(ticketInfoPanel,e1.getMessage());

@@ -3,6 +3,7 @@ package com.jia.train.ui;
 import com.jia.train.listener.QueryTicketActionListener;
 import com.jia.train.po.StationNameId;
 import com.jia.train.po.QueryInfo;
+import com.jia.train.po.TrainInfo;
 import com.jia.train.util.StationDataUtil;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,11 +50,16 @@ public class TicketInfoPanel extends JPanel {
     JLabel labelDate = new JLabel("出发日");
 
     JButton buttonQuery = new JButton("查 询");
-
+    public TrainInfoTableModel tableModel=new TrainInfoTableModel(new ArrayList<TrainInfo>());
+    public JTable table=new JTable(tableModel);
+    public JScrollPane scrollPane = new JScrollPane(table);
     public TicketInfoPanel(int width,int height) {
         initQueryComponent();
+        this.setBounds(10, 80, width, height);
+        scrollPane.setBounds(0,50,this.getWidth()-50,this.getHeight()-200);
+        this.add(scrollPane);
         initListener();
-        this.setBounds(100, 100, width-150, height-100);
+
     }
 
 
@@ -295,7 +302,7 @@ public class TicketInfoPanel extends JPanel {
         JFrame frame = new JFrame();
         frame.setBounds(200, 100, 1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new TicketInfoPanel(800,600));
+        frame.add(new TicketInfoPanel(1000,600));
         frame.setVisible(true);
     }
 }
