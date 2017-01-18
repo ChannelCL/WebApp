@@ -2,7 +2,6 @@ package com.jia.train.data;
 
 import com.jia.train.po.Passenger;
 import com.jia.train.po.TrainOrder;
-
 import java.util.List;
 
 /**

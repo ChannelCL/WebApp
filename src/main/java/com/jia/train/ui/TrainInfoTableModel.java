@@ -2,6 +2,7 @@ package com.jia.train.ui;
 
 import com.jia.train.po.TrainInfo;
 
+import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.util.List;
@@ -41,7 +42,7 @@ public class TrainInfoTableModel implements TableModel {
 
     public Class<?> getColumnClass(int columnIndex){
 
-        return String.class;
+        return JTextField.class;
 
     }
 

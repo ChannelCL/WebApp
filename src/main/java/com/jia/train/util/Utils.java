@@ -174,7 +174,6 @@ public class Utils {
 
     /**
      * 查询未完成订单
-     *
      * @param u12306
      * @return
      * @throws Exception
@@ -188,6 +187,7 @@ public class Utils {
         System.out.println(json.toJSONString(json, true));
         System.out.println(json.getJSONObject("data").getJSONArray("orderDBList").toString());
         TrainOrder order = JSONArray.parseObject(json.getJSONObject("data").getJSONArray("orderDBList").getJSONObject(0).toJSONString(), TrainOrder.class);
+        System.out.println(order);
         return order;
     }
 
@@ -197,7 +197,7 @@ public class Utils {
             UserData.setPassengers(getPassengers(u12306));
             UserData.setNoCompleteOrder(getNoCompleteOrder(u12306));
             payOrder(u12306,UserData.getNoCompleteOrder().getSequence_no());
-//            cancelNoCompleteOrder(u12306,UserData.getNoCompleteOrder().getSequence_no());
+            cancelNoCompleteOrder(u12306,UserData.getNoCompleteOrder().getSequence_no());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -295,16 +295,14 @@ public class Utils {
      * @throws Exception
      */
     public static List<TrainInfo> queryTicket(QueryInfo info) throws Exception {
-
-
-        String url = "https://kyfw.12306.cn/otn/leftTicket/queryA?leftTicketDTO.train_date=" + info.getDate()
+        String url = "https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date=" + info.getDate()
                 + "&leftTicketDTO.from_station=" + info.getStartId() + "&leftTicketDTO.to_station=" + info.getEndId() +
                 "&purpose_codes=" + info.getType();
         String result = HttpClientUtil.getDataByGet(url);
         if (result.contains("选择的查询日期不在预售日期范围内")) {
             throw new Exception("选择的查询日期不在预售日期范围内");
         }
-
+        System.out.println(result);
         JSONObject json = JSONObject.parseObject(result);
         JSONArray array = json.getJSONArray("data");
         if (array == null || array.size() == 0) {
